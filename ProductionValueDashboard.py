@@ -113,15 +113,15 @@ if selected_player:
 
     with col1:
         st.metric("Team", player_data['Team'])
-        st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
-        st.metric("Production Value (Millions)", f"{player_data['Production Value (Millions)']:.2f}")
+        st.metric("Production Value", f"${player_data['Production Value (Millions)']:.2f}M")
+        st.metric("Possesions", int(player_data['Possesions']))
 
     with col2:
         st.metric("RAPM Over Replacement", f"{player_data['RAPM over replacement']:.2f}")
-        st.metric("Possesions", int(player_data['Possesions']))
+        st.metric("AAV", f"${player_data['AAV']:.2f}M")
 
     with col3:
-        st.metric("AAV", f"${player_data['AAV']:.2f}M")
+        st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
         st.metric("Net Value", f"{player_data['Net Value']:.2f}")
 
 # -------------------------------
