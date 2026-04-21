@@ -122,7 +122,7 @@ if selected_player:
 
     with col3:
         st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
-        st.metric("Net Value", f"{player_data['Net Value']:.2f}")
+        st.metric("Net Value", f"{player_data['Net Value']:.2f}M")
 
 # -------------------------------
 # LEADERBOARDS
