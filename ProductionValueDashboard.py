@@ -4,7 +4,7 @@ import pandas as pd
 # Load CSV
 @st.cache_data
 def load_data():
-    df = pd.read_csv("ProductionValue.csv")
+    df = pd.read_csv("productionvalue.csv")
     return df
 
 df = load_data()
@@ -114,11 +114,11 @@ if selected_player:
     with col1:
         st.metric("Team", player_data['Team'])
         st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
-        st.metric("Production Value", f"{player_data['Production Value']:.2f}")
+        st.metric("Production Value (Millions)", f"{player_data['Production Value (Millions)']:.2f}")
 
     with col2:
         st.metric("RAPM Over Replacement", f"{player_data['RAPM over replacement']:.2f}")
-        st.metric("Possessions", int(player_data['Possessions']))
+        st.metric("Possesions", int(player_data['Possesions']))
 
     with col3:
         st.metric("AAV", f"${player_data['AAV']:.2f}M")
@@ -135,7 +135,7 @@ stat_choice = st.selectbox(
     [
         "RAPM over replacement",
         "Wins Added",
-        "Production Value",
+        "Production Value (Millions)",
         "Net Value"
     ]
 )
