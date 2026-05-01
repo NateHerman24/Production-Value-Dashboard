@@ -15,18 +15,25 @@ st.title("NBA Production Value Dashboard")
 # TEAM MATCHUP SECTION
 # -------------------------------
 
-st.header("Team Win Prediction (Wins Added)")
+st.header("Team Win Prediction (Wins Added & VORP)")
 
 teams = df['Team'].unique()
 
 team_1 = st.selectbox("Select Team 1", teams)
 team_2 = st.selectbox("Select Team 2", teams)
 
+# --- Functions ---
 def team_wins_added(df, team, excluded_players):
     team_df = df[df['Team'] == team]
     team_df = team_df[~team_df['Player'].isin(excluded_players)]
     return team_df['Wins Added'].sum()
 
+def team_vorp(df, team, excluded_players):
+    team_df = df[df['Team'] == team]
+    team_df = team_df[~team_df['Player'].isin(excluded_players)]
+    return team_df['Vorp'].sum()
+
+# --- UI + Calculations ---
 if team_1 and team_2:
     st.write(f"{team_1} vs {team_2}")
 
@@ -42,27 +49,52 @@ if team_1 and team_2:
         key="ex2"
     )
 
-    team1_sum = team_wins_added(df, team_1, excluded_1)
-    team2_sum = team_wins_added(df, team_2, excluded_2)
+    # Calculate both metrics
+    team1_wins = team_wins_added(df, team_1, excluded_1)
+    team2_wins = team_wins_added(df, team_2, excluded_2)
 
+    team1_vorp = team_vorp(df, team_1, excluded_1)
+    team2_vorp = team_vorp(df, team_2, excluded_2)
+
+    # Display side-by-side
     col1, col2 = st.columns(2)
 
     with col1:
-        st.metric(team_1, f"{team1_sum:.2f}")
+        st.subheader(team_1)
+        st.metric("Wins Added", f"{team1_wins:.2f}")
+        st.metric("VORP", f"{team1_vorp:.2f}")
 
     with col2:
-        st.metric(team_2, f"{team2_sum:.2f}")
+        st.subheader(team_2)
+        st.metric("Wins Added", f"{team2_wins:.2f}")
+        st.metric("VORP", f"{team2_vorp:.2f}")
 
-    diff = abs(team1_sum - team2_sum)
-
+    # --- Predictions ---
     if st.button("Predict Matchup"):
-        if team1_sum > team2_sum:
-            st.write(f"{team_1} is predicted to win by {diff:.2f} Wins Added")
-        elif team2_sum > team1_sum:
-            st.write(f"{team_2} is predicted to win by {diff:.2f} Wins Added")
-        else:
-            st.write("It's a tie!")
+        wins_diff = abs(team1_wins - team2_wins)
+        vorp_diff = abs(team1_vorp - team2_vorp)
 
+        st.subheader("Matchup Predictions")
+
+        # Wins Added result
+        if team1_wins > team2_wins:
+            wins_result = f"{team_1} favored by {wins_diff:.2f} (Wins Added)"
+        elif team2_wins > team1_wins:
+            wins_result = f"{team_2} favored by {wins_diff:.2f} (Wins Added)"
+        else:
+            wins_result = "Even matchup (Wins Added)"
+
+        # VORP result
+        if team1_vorp > team2_vorp:
+            vorp_result = f"{team_1} favored by {vorp_diff:.2f} (VORP)"
+        elif team2_vorp > team1_vorp:
+            vorp_result = f"{team_2} favored by {vorp_diff:.2f} (VORP)"
+        else:
+            vorp_result = "Even matchup (VORP)"
+
+        # Output both together
+        st.write(wins_result)
+        st.write(vorp_result)
 # -------------------------------
 # Team Rankings
 # -------------------------------
@@ -119,6 +151,7 @@ if selected_player:
     with col2:
         st.metric("RAPM Over Replacement", f"{player_data['RAPM over replacement']:.2f}")
         st.metric("AAV", f"${player_data['AAV']:.2f}M")
+        st.metric("VORP", f"{player_data['VORP']:.2f}")
 
     with col3:
         st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
