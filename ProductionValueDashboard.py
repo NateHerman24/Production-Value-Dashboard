@@ -151,7 +151,7 @@ if selected_player:
     with col2:
         st.metric("RAPM Over Replacement", f"{player_data['RAPM over replacement']:.2f}")
         st.metric("AAV", f"${player_data['AAV']:.2f}M")
-        st.metric("VORP", f"{player_data['VORP']:.2f}")
+        st.metric("VORP", f"{player_data['VORP']:.f}")
 
     with col3:
         st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
