@@ -67,7 +67,7 @@ if team_1 and team_2:
     with col2:
         st.subheader(team_2)
         st.metric("Wins Added", f"{team2_wins:.2f}")
-        st.metric("VORP", f"{team2_vorp:.2f}")
+        st.metric("VORP", f"{team2_vorp:.1f}")
 
     # --- Predictions ---
     if st.button("Predict Matchup"):
@@ -151,7 +151,7 @@ if selected_player:
     with col2:
         st.metric("RAPM Over Replacement", f"{player_data['RAPM over replacement']:.2f}")
         st.metric("AAV", f"${player_data['AAV']:.2f}M")
-        st.metric("VORP", f"{player_data['VORP']:.f}")
+        st.metric("VORP", f"{player_data['VORP']:.1f}")
 
     with col3:
         st.metric("Wins Added", f"{player_data['Wins Added']:.2f}")
